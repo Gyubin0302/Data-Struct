@@ -178,3 +178,64 @@
         }
     }
   ```
+  - PriorityQueue를 이용한 객체 정렬
+  ```java
+      import java.util.PriorityQueue;
+
+      class Person implements Comparable<Person> {
+        String name;
+        int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        public int compareTo(Person o) {
+            // 1 : 변경 안 함
+            // -1 : 변경
+            // 새롭게 추가하는(this) 데이터가 원래 데이터(o)보다 더 적을 때 변경(적은 값이 올라감, 오름차순)
+            return this.age <= o.age ? -1 : 1;
+
+            // 내림차순
+            return o.age <= this.age ? -1: 1;
+        }
+    }
+
+    public class Practice1 {
+        public static void solution(String[] name, int[] age) {
+            PriorityQueue<Person> persons = new PriorityQueue<>();
+            for (int i = 0; i < name.length; i++) {
+                Person person = new Person(name[i], age[i]);
+                persons.add(person);
+            }
+
+            while (!persons.isEmpty()) {
+                Person person = persons.poll();
+                System.out.println(person.name + "  " + person.age);
+            }
+        }
+
+        public static void main(String[] args) {
+            String[] name = {"A", "B", "C", "D", "E"};
+            int[] age = {30, 20, 45, 62, 35};
+
+            solution(name, age);
+            System.out.println("===========");
+            
+            // 람다식으로 객체에 Comparable을 구현 하지 않고 사용 가능
+            PriorityQueue<Person> person2 = new PriorityQueue<>((Person p1, Person p2) -> (p1.age <= p2.age ? -1 : 1));
+
+            for (int i = 0; i < name.length; i++) {
+                Person person = new Person(name[i], age[i]);
+                person2.add(person);
+            }
+
+            while (!person2.isEmpty()) {
+                Person person = person2.poll();
+                System.out.println(person.name + "  " + person.age);
+            }
+        }
+    }
+  ```
